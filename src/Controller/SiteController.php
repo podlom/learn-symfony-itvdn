@@ -20,8 +20,10 @@ class SiteController extends AbstractController
     #[Route('/', name: 'app_site_home')]
     public function home(): Response
     {
-        return $this->render('site/index.html.twig', [
-            'controller_name' => 'SiteController',
+        $rand = rand(0, 99);
+        return $this->render('site/home.html.twig', [
+            'controllerName' => 'SiteController',
+            'randomNumber' => $rand,
         ]);
     }
 }
