@@ -9,6 +9,9 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
+# ignore phpStorm IDE settings folder
+/.idea/*
+
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
