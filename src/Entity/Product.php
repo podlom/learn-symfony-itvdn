@@ -23,6 +23,48 @@ class Product
     #[ORM\Column]
     private ?int $price = null;
 
+    #[ORM\Column(length: 150)]
+    private ?string $author = null;
+
+    #[ORM\Column(length: 128)]
+    private ?string $sku = null;
+
+    /**
+     * @return string|null
+     */
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param string|null $author
+     */
+    public function setAuthor(?string $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSku(): ?string
+    {
+        return $this->sku;
+    }
+
+    /**
+     * @param string|null $sku
+     */
+    public function setSku(?string $sku): self
+    {
+        $this->sku = $sku;
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
