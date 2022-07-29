@@ -38,4 +38,25 @@ class ProductController extends AbstractController
             'message' => $msg,
         ]);
     }
+
+    /**
+     * @Route("/product/{id}", name="app_display_product")
+     */
+    public function displayProduct($id): Response
+    {
+        $product = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->find($id);
+
+        if (!$product) {
+            throw $this->createNotFoundException(
+                'No product with id ' . $id . ' found.'
+            );
+        }
+
+        return $this->render('product/display.html.twig', [
+            'title' => $product->getName(),
+            'product' => $product,
+        ]);
+    }
 }
