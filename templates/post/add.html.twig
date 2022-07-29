@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test Post & Category was added{% endblock %}
+
+{% block body %}
+<div class="example-wrapper">
+    <h2>Test category was added: ✅</h2>
+
+    <div class="category-dump-wrapper">
+        {{ dump(category) }}
+    </div>
+
+    <hr>
+    <h2>Test post was added: ✅</h2>
+
+    <div class="post-dump-wrapper">
+        {{ dump(post) }}
+    </div>
+
+</div>
+{% endblock %}
