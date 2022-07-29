@@ -39,6 +39,21 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findByAuthor($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.author = :val')
+            ->setParameter('val', $value)
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */
