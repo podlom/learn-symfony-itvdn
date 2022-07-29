@@ -25,6 +25,8 @@ class PostController extends AbstractController
     #[Route('/add-post', name: 'app_add_post')]
     public function addPost(ManagerRegistry $doctrine, RandGenerator $randomGenerator): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'To access /add-post you should have ROLE_ADMIN granted');
+
         $entityManager = $doctrine->getManager();
         $randomNumber = $randomGenerator->randomNumber(101, 909);
 

@@ -16,6 +16,8 @@ class ProductController extends AbstractController
     #[Route('/add-product', name: 'app_add_product')]
     public function make(ManagerRegistry $doctrine, RandGenerator $randomGenerator): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'To access /add-product you should have ROLE_ADMIN granted');
+
         $entityManager = $doctrine->getManager();
         $randomNumber = $randomGenerator->randomNumber(21, 91);
 
