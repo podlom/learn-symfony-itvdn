@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+
 use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
 class Product
 {
     #[ORM\Id]
@@ -104,5 +107,14 @@ class Product
         $this->price = $price;
 
         return $this;
+    }
+
+    #[ORM\PreUpdate]
+    public function setNameValue(): void
+    {
+        error_log(__METHOD__ . ' +' . __LINE__ . ' original $this->name value: ' . var_export($this->name, true));
+        dd($this->name);
+
+        $this->name = $this->name . ' testing name #[ORM\PreUpdate]';
     }
 }

@@ -13,22 +13,20 @@ use App\Entity\Product;
 
 class ProductController extends AbstractController
 {
-    #[Route('/make-product', name: 'app_make_product')]
+    #[Route('/add-product', name: 'app_add_product')]
     public function make(ManagerRegistry $doctrine, RandGenerator $randomGenerator): Response
     {
         $entityManager = $doctrine->getManager();
-
-        $randomNumber = $randomGenerator->randomNumber(21, 99);
+        $randomNumber = $randomGenerator->randomNumber(21, 91);
 
         $product = new Product();
-        $product->setName('Test Product #' . $randomNumber);
-        $product->setDescription('Test Product #' . $randomNumber . ' description text goes here...');
+        $product->setName('Test Product With a Price ' . $randomNumber);
+        $product->setDescription('Test Product with a price ' . $randomNumber . ' description text goes here...');
         $product->setPrice($randomNumber);
-        $product->setAuthor('Taras');
+        $product->setAuthor('Taras from ProductController::make');
         $product->setSku('S019-' . $randomNumber);
 
         $entityManager->persist($product);
-
         $entityManager->flush();
 
         $msg = 'Saved a new product with ID: ' . $product->getId();
