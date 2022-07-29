@@ -42,11 +42,9 @@ class ProductController extends AbstractController
     /**
      * @Route("/product/{id}", name="app_display_product")
      */
-    public function displayProduct($id): Response
+    public function displayProduct($id, ManagerRegistry $doctrine): Response
     {
-        $product = $this->getDoctrine()
-            ->getRepository(Product::class)
-            ->find($id);
+        $product = $doctrine->getRepository(Product::class)->find($id);
 
         if (!$product) {
             throw $this->createNotFoundException(
