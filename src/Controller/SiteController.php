@@ -10,14 +10,6 @@ use App\Service\RandGenerator;
 
 class SiteController extends AbstractController
 {
-    #[Route('/site', name: 'app_site')]
-    public function index(): Response
-    {
-        return $this->render('site/index.html.twig', [
-            'controller_name' => 'SiteController',
-        ]);
-    }
-
     #[Route('/', name: 'app_site_home')]
     public function home(RandGenerator $randomGenerator): Response
     {
@@ -26,6 +18,14 @@ class SiteController extends AbstractController
         return $this->render('site/home.html.twig', [
             'controllerName' => 'SiteController',
             'randomNumber' => $rand,
+        ]);
+    }
+
+    #[Route('/site', name: 'app_site')]
+    public function index(): Response
+    {
+        return $this->render('site/index.html.twig', [
+            'controller_name' => 'SiteController',
         ]);
     }
 
