@@ -55,4 +55,20 @@ class ProductController extends AbstractController
             'product' => $product,
         ]);
     }
+
+    /**
+     * @Route("/products-by-author/{author}", name="app_display_products_by_author")
+     */
+    public function displayProductsByAuthor(string $author, ManagerRegistry $doctrine): Response
+    {
+        $entityManager = $doctrine->getManager();
+
+        $productRepository = $doctrine->getRepository(Product::class);
+        $products = $productRepository->findByAuthor($author);
+
+        return $this->render('product/products-by-author.html.twig', [
+            'author' => $author,
+            'products' => $products,
+        ]);
+    }
 }

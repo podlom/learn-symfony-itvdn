@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products by {{ author }}{% endblock %}
+
+{% block body %}
+<div class="products-by-author-wrapper">
+    {{ dump(products) }}
+</div>
+{% endblock %}

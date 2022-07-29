@@ -54,6 +54,18 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findWhereName(string $name): array
+    {
+        $queryBuilder = $this->getQueryBuiler('q')
+            ->where('q.name = ":name"')
+            ->setParameter('name', $name)
+            ->orderBy('q.name', 'ASC');
+
+        $query = $queryBuilder->getQuery();
+
+        return $query->execute();
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */
