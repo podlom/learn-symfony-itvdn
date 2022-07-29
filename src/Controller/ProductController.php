@@ -71,4 +71,20 @@ class ProductController extends AbstractController
             'products' => $products,
         ]);
     }
+
+    /**
+     * @Route("/vip-products/{price}", name="app_display_vip_products")
+     */
+    public function displayVipProducts(int $price, ManagerRegistry $doctrine): Response
+    {
+        $entityManager = $doctrine->getManager();
+
+        $productRepository = $doctrine->getRepository(Product::class);
+        $products = $productRepository->findByPriceEqualOrMoreThan($price);
+
+        return $this->render('product/vip-products.html.twig', [
+            'price' => $price,
+            'products' => $products,
+        ]);
+    }
 }

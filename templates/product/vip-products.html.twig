@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}VIP Products with price not less than {{ price }}{% endblock %}
+
+{% block body %}
+<div class="products-by-author-wrapper">
+    {{ dump(products) }}
+</div>
+{% endblock %}

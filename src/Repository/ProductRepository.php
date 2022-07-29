@@ -48,10 +48,23 @@ class ProductRepository extends ServiceEntityRepository
             ->andWhere('p.author = :val')
             ->setParameter('val', $value)
             ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findByPriceEqualOrMoreThan($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.price >= :val')
+            ->setParameter('val', $value)
+            ->orderBy('p.price', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     public function findWhereName(string $name): array
