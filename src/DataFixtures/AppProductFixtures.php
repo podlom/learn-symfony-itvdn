@@ -13,9 +13,10 @@ class AppProductFixtures extends Fixture
 {
     const NUM_PRODUCTS = 5;
 
-    public function load(ObjectManager $manager, RandGenerator $randGenerator): void
+    public function load(ObjectManager $manager): void
     {
         for ($i = 1; $i <= self::NUM_PRODUCTS; $i++) {
+            $randGenerator = new RandGenerator();
             $number1 = $randGenerator->randomNumber(111, 999);
             /** @var Product $product1 */
             $product1 = new Product();
