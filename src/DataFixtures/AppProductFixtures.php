@@ -11,7 +11,7 @@ use App\Service\RandGenerator;
 
 class AppProductFixtures extends Fixture
 {
-    const NUM_PRODUCTS = 5;
+    const NUM_PRODUCTS = 15;
 
     public function load(ObjectManager $manager): void
     {
