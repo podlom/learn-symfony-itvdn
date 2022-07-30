@@ -102,4 +102,24 @@ class ProductController extends AbstractController
             'products' => $products,
         ]);
     }
+
+    /**
+     * @Route("/product-added/{id}", name="app_product_added")
+     */
+    public function productAdded($id, ManagerRegistry $doctrine): Response
+    {
+        $product = $doctrine->getRepository(Product::class)->find($id);
+
+        if (!$product) {
+            throw $this->createNotFoundException(
+                'No product with id ' . $id . ' found.'
+            );
+        }
+
+        return $this->render('product/added.html.twig', [
+            'title' => 'Product was added',
+            'h1' => 'Product with name ' . $product->getName() . ' was added.',
+            'product' => $product,
+        ]);
+    }
 }

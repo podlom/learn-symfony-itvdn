@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+<div class="product-added-wrapper">
+    <h1>{{ h1 }}</h1>
+    <hr>
+
+    {{ dump(product) }}
+</div>
+{% endblock %}
