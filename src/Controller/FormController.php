@@ -70,4 +70,22 @@ class FormController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/product-decoder/{format}', name: 'app_product_decoder')]
+    public function productDecoder(Request $request, string $format = 'json'): Response
+    {
+        $encoders = [new JsonEncoder(), new XmlEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+
+        if ($format === 'json') {
+            $jsonData = '{"author":"Taras","sku":"TS-002-99","id":null,"name":"TestName33","description":"Test Description goes here \"33","price":99}';
+            $decodedData = $serializer->deserialize($jsonData,Product::class,'json');
+            return new Response(var_export($decodedData, true));
+        } else {
+            $xmlData = '<response><author>Taras</author><sku>TS-002-22</sku><id></id><name>TestName22</name><description>TesttDescr22</description><price>22</price></response>';
+            $decodedData = $serializer->deserialize($xmlData,Product::class,'xml');
+            return new Response(var_export($decodedData, true));
+        }
+    }
 }
