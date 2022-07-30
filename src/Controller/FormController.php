@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -25,7 +26,6 @@ class FormController extends AbstractController
     #[Route('/form', name: 'app_form')]
     public function index(Request $request, ManagerRegistry $doctrine): Response
     {
-        $post = new Product();
         $form = $this->createForm(PostType::class);
         $form->handleRequest($request);
 
@@ -46,7 +46,6 @@ class FormController extends AbstractController
     #[Route('/product-encoder/{format}', name: 'app_product_encoder')]
     public function productEncoder(Request $request, string $format = 'json'): Response
     {
-        $post = new Product();
         $form = $this->createForm(PostType::class);
         $form->handleRequest($request);
 
@@ -60,6 +59,23 @@ class FormController extends AbstractController
             if ($format === 'json') {
                 $jsonContent = $serializer->serialize($product, 'json');
                 return new Response($jsonContent);
+            }
+            elseif ($format === 'csv') {
+                $csvEncoder = new CsvEncoder();
+                $context = [
+                    'csv_delimiter' => '|',
+                    'csv_escape_char' => '~',
+                ];
+                /** @var Product $product */
+                $productData = [
+                    'sku' => $product->getSku(),
+                    'name' => $product->getName(),
+                    'price' => $product->getPrice(),
+                    'description' => $product->getDescription(),
+                    'author' => $product->getAuthor(),
+                ];
+                $csvContent = $csvEncoder->encode($productData, 'csv', $context);
+                return new Response($csvContent);
             } else {
                 $xmlContent = $serializer->serialize($product, 'xml');
                 return new Response($xmlContent);
