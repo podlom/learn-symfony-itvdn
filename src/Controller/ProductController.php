@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Service\RandGenerator;
 use App\Entity\Product;
 
@@ -14,28 +15,40 @@ use App\Entity\Product;
 class ProductController extends AbstractController
 {
     #[Route('/add-product', name: 'app_add_product')]
-    public function make(ManagerRegistry $doctrine, RandGenerator $randomGenerator): Response
+    public function make(
+        ManagerRegistry $doctrine,
+        RandGenerator $randomGenerator,
+        ValidatorInterface $validator
+    ): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'To access /add-product you should have ROLE_ADMIN granted');
+        // $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'To access /add-product you should have ROLE_ADMIN granted');
 
         $entityManager = $doctrine->getManager();
         $randomNumber = $randomGenerator->randomNumber(21, 91);
 
         $product = new Product();
-        $product->setName('Test Product With a Price ' . $randomNumber);
+        // $product->setName('Test Product With a Price ' . $randomNumber);
+        $product->setName('');
         $product->setDescription('Test Product with a price ' . $randomNumber . ' description text goes here...');
         $product->setPrice($randomNumber);
         $product->setAuthor('Taras from ProductController::make');
         $product->setSku('S019-' . $randomNumber);
 
-        $entityManager->persist($product);
-        $entityManager->flush();
+        $errors = $validator->validate($product);
 
-        $msg = 'Saved a new product with ID: ' . $product->getId();
+        if ($errors->count() == 0) {
+            $entityManager->persist($product);
+            $entityManager->flush();
+            $msg = 'Saved a new product with ID: ' . $product->getId();
+        } else {
+            $msg = 'Errors: ' . print_r($errors, true);
+        }
+        $msg .= ' Errors count: ' . var_export($errors->count(), true);
 
         return $this->render('product/make.html.twig', [
             'controller_name' => 'ProductController',
             'message' => $msg,
+            'errors' => $errors,
         ]);
     }
 
